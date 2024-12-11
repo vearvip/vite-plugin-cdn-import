@@ -1,6 +1,6 @@
 {
-    "name": "vite-plugin-cdn-import",
-    "version": "1.0.1",
+    "name": "@vearvip/vite-plugin-cdn-import",
+    "version": "1.0.2",
     "description": "Import packages from CDN for the vite plugin",
     "type": "module",
     "main": "dist/index.js",
@@ -25,7 +25,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/mmf-fe/vite-plugin-cdn-import.git"
+        "url": "git+https://github.com/vearvip/vite-plugin-cdn-import.git"
     },
     "scripts": {
         "dev": "npm run build -- --watch",
@@ -34,7 +34,7 @@
         "prepublishOnly": "npm run build",
         "prepare": "husky"
     },
-    "author": "vfasky<vfasky@me.com>",
+    "author": "vear<vear.vip@qq.com>",
     "license": "MIT",
     "devDependencies": {
         "@types/node": "^20.12.7",
