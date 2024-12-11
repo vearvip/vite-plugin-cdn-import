@@ -1,6 +1,6 @@
 {
     "name": "@vearvip/vite-plugin-cdn-import",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "description": "Import packages from CDN for the vite plugin",
     "type": "module",
     "main": "dist/index.js",

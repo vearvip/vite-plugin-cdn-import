@@ -171,8 +171,10 @@ function genModuleByName(name: ModuleName) {
             )
         } else {
             if (
-                !(isJsdeliver(prodUrl) || isUnpkg(prodUrl)) &&
-                isBootCdn(prodUrl)
+                !isJsdeliver(prodUrl) ||
+                !isUnpkg(prodUrl) ||
+                !isCdnjs(prodUrl) ||
+                !isBootCdn(prodUrl)
             ) {
                 console.warn(
                     'Unknown CDN, please ensure that this CDN supports jsdelivr rules',
