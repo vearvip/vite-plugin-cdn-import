@@ -2,6 +2,7 @@ import { Module } from './type'
 
 type AutoModuleConfig = Partial<Module> & {
     jsdeliver: Partial<Module>
+    bootCdn: Partial<Module>
 }
 
 const isDev = process.env.NODE_ENV === 'development'
@@ -19,11 +20,21 @@ const modulesConfig = {
                 ? 'umd/react.development.js'
                 : 'umd/react.production.min.js',
         },
+        bootCdn: {
+            path: isDev
+                ? 'umd/react.development.js'
+                : 'umd/react.production.min.js',
+        },
     },
     'react-dom': {
         var: 'ReactDOM',
         alias: ['react-dom/client'],
         jsdeliver: {
+            path: isDev
+                ? 'umd/react-dom.development.js'
+                : 'umd/react-dom.production.min.js',
+        },
+        bootCdn: {
             path: isDev
                 ? 'umd/react-dom.development.js'
                 : 'umd/react-dom.production.min.js',
@@ -34,12 +45,19 @@ const modulesConfig = {
         jsdeliver: {
             path: 'dist/umd/react-router-dom.production.min.js',
         },
+        bootCdn: {
+            path: 'umd/react-router-dom.production.min.js',
+        },
     },
     antd: {
         var: 'antd',
         jsdeliver: {
             path: 'dist/antd.min.js',
             css: 'dist/reset.min.css',
+        },
+        bootCdn: {
+            path: 'antd.min.js',
+            css: 'reset.min.css',
         },
     },
     vue: {
@@ -49,11 +67,19 @@ const modulesConfig = {
                 ? 'dist/vue.runtime.global.js'
                 : 'dist/vue.runtime.global.prod.js',
         },
+        bootCdn: {
+            path: isDev
+                ? 'vue.runtime.global.js'
+                : 'vue.runtime.global.prod.js',
+        },
     },
     'vue-router': {
         var: 'VueRouter',
         jsdeliver: {
             path: 'dist/vue-router.global.min.js',
+        },
+        bootCdn: {
+            path: 'vue-router.global.min.js',
         },
     },
     'vue-router@3': {
@@ -62,6 +88,10 @@ const modulesConfig = {
             name: 'vue-router',
             path: 'dist/vue-router.min.js',
         },
+        bootCdn: {
+            name: 'vue-router',
+            path: 'vue-router.min.js',
+        },
     },
     vue2: {
         var: 'Vue',
@@ -69,10 +99,17 @@ const modulesConfig = {
             name: 'vue',
             path: isDev ? 'dist/vue.runtime.js' : 'dist/vue.runtime.min.js',
         },
+        bootCdn: {
+            name: 'vue',
+            path: isDev ? 'vue.runtime.js' : 'vue.runtime.min.js',
+        },
     },
     moment: {
         var: 'moment',
         jsdeliver: {
+            path: 'moment.min.js',
+        },
+        bootCdn: {
             path: 'moment.min.js',
         },
     },
@@ -81,16 +118,25 @@ const modulesConfig = {
         jsdeliver: {
             path: 'dayjs.min.js',
         },
+        bootCdn: {
+            path: 'dayjs.min.js',
+        },
     },
     axios: {
         var: 'axios',
         jsdeliver: {
             path: 'dist/axios.min.js',
         },
+        bootCdn: {
+            path: 'axios.min.js',
+        },
     },
     lodash: {
         var: '_',
         jsdeliver: {
+            path: 'lodash.min.js',
+        },
+        bootCdn: {
             path: 'lodash.min.js',
         },
     },
@@ -109,6 +155,9 @@ function isUnpkg(prodUrl: string) {
 function isCdnjs(prodUrl: string) {
     return prodUrl.includes('//cdnjs.cloudflare.com')
 }
+function isBootCdn(prodUrl: string) {
+    return prodUrl.includes('//cdn.bootcdn.net')
+}
 
 function genModuleByName(name: ModuleName) {
     const config = modulesConfig[name] as AutoModuleConfig
@@ -121,7 +170,10 @@ function genModuleByName(name: ModuleName) {
                 `The configuration of module ${name} in ${prodUrl} does not exist `,
             )
         } else {
-            if (!(isJsdeliver(prodUrl) || isUnpkg(prodUrl))) {
+            if (
+                !(isJsdeliver(prodUrl) || isUnpkg(prodUrl)) ||
+                isBootCdn(prodUrl)
+            ) {
                 console.warn(
                     'Unknown CDN, please ensure that this CDN supports jsdelivr rules',
                 )
@@ -130,7 +182,7 @@ function genModuleByName(name: ModuleName) {
                 name,
                 var: config.var,
                 alias: config.alias,
-                ...config.jsdeliver,
+                ...(isBootCdn(prodUrl) ? config.bootCdn : config.jsdeliver),
             } as Module
         }
     }
