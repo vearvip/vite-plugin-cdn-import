@@ -171,7 +171,7 @@ function genModuleByName(name: ModuleName) {
             )
         } else {
             if (
-                !(isJsdeliver(prodUrl) || isUnpkg(prodUrl)) ||
+                !(isJsdeliver(prodUrl) || isUnpkg(prodUrl)) &&
                 isBootCdn(prodUrl)
             ) {
                 console.warn(
