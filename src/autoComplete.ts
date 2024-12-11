@@ -156,7 +156,10 @@ function isCdnjs(prodUrl: string) {
     return prodUrl.includes('//cdnjs.cloudflare.com')
 }
 function isBootCdn(prodUrl: string) {
-    return prodUrl.includes('//cdn.bootcdn.net')
+    return (
+        prodUrl.includes('//cdn.bootcdn.net') ||
+        prodUrl.includes('//cdn.bootcdn.net')
+    )
 }
 
 function genModuleByName(name: ModuleName) {
